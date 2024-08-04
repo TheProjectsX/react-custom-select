@@ -32,6 +32,37 @@
   border: 2px solid dodgerblue;
 }
 
+.kzui-select__multi-selected-item-wrapper {
+  padding: 5px;
+  padding-top: 10px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.kzui-select__multi-selected-item {
+  font-size: 0.8rem;
+  padding-left: 8px;
+  background-color: rgb(230, 224, 224);
+  display: inline-block;
+  /* color: white; */
+}
+
+.kzui-select__multi-selected-item-remove {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  padding: 8px;
+  margin-left: 4px;
+  font-size: 0.7rem;
+  color: red;
+  cursor: pointer;
+}
+
+.kzui-select__multi-selected-item-remove:hover {
+  background-color: rgb(255, 167, 167);
+}
+
 .kzui-select__control-input {
   width: 100%;
   padding: 0;
@@ -112,10 +143,23 @@
   background-color: dodgerblue;
 }
 
+.kzui-select__menu-item--multi-selected {
+  display: none;
+}
+
 .kzui-select__menu-group-label {
   text-transform: uppercase;
   font-size: 0.8rem;
   padding: 10px 15px;
   font-weight: bolder;
+  color: gray;
+}
+
+.kzui-select__no-item {
+  font-size: 1rem;
+  padding: 10px 15px;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
   color: gray;
 }

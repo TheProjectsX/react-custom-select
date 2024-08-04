@@ -69,6 +69,7 @@ function App() {
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isGrouped, setIsGrouped] = useState(false);
+  const [isMulti, setIsMulti] = useState(false);
 
   const Checkbox = ({ children, ...props }) => (
     <label style={{ marginRight: "1em" }}>
@@ -82,10 +83,12 @@ function App() {
       <div className="wrapper">
         <Select
           Options={groupedOptions}
+          // Value={groupedOptions[0].options}
           isClearable={isClearable}
           isSearchable={isSearchable}
           isDisabled={isDisabled}
           isGrouped={isGrouped}
+          isMulti={isMulti}
           onSearch={consoleElementSearch}
           onMenuOpen={consoleMenuOpen}
           onChange={consoleElement}
@@ -124,6 +127,12 @@ function App() {
           onChange={() => setIsGrouped((state) => !state)}
         >
           Grouped
+        </Checkbox>
+        <Checkbox
+          checked={isMulti}
+          onChange={() => setIsMulti((state) => !state)}
+        >
+          Multi
         </Checkbox>
       </div>
     </main>

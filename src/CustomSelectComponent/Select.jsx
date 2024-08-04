@@ -15,7 +15,9 @@ const Select = ({
   onSearch = (value) => {},
 }) => {
   const [menuOpened, setMenuOpened] = useState(false);
-  const [currentItem, setCurrentItem] = useState(Value);
+  const [currentItem, setCurrentItem] = useState(
+    isMulti ? (Array.isArray(Value) ? Value : []) : Object(Value)
+  );
   const [currentViewingLabel, setCurrentViewingLabel] = useState(
     Value.label ?? ""
   );
@@ -23,7 +25,8 @@ const Select = ({
   const [optionsIsGrouped, setOptionsIsGrouped] = useState(isGrouped);
 
   useEffect(() => {
-    if (optionsIsGrouped) {
+    if (isGrouped) {
+      setOptionsIsGrouped(isGrouped);
       if (Options.every((item) => !item.hasOwnProperty("options"))) {
         setSelectionOptions([
           {
@@ -38,17 +41,24 @@ const Select = ({
       }
     } else {
       if (Options.every((item) => item.hasOwnProperty("options"))) {
+        setSelectionOptions(Options);
         setOptionsIsGrouped(true);
       } else {
+        setOptionsIsGrouped(isGrouped);
         setSelectionOptions(Options);
       }
     }
-  }, [optionsIsGrouped]);
+    console.log(optionsIsGrouped);
+  }, [isGrouped]);
   //   Handler Function
   const handleElementChanged = (item) => {
-    setCurrentItem(item);
-    setCurrentViewingLabel(item.label);
-    onChange(item);
+    if (isMulti) {
+      setCurrentItem([...currentItem, item]);
+    } else {
+      setCurrentItem(item);
+      setCurrentViewingLabel(item.label);
+      onChange(item);
+    }
   };
 
   const handleSearch = (value) => {
@@ -60,9 +70,20 @@ const Select = ({
     }
 
     if (optionsIsGrouped) {
+      setSelectionOptions(
+        Options.map((group) => {
+          const filteredOptions = group.options.filter((option) =>
+            option.label.toLowerCase().includes(value.toLowerCase())
+          );
+          return {
+            ...group,
+            options: filteredOptions,
+          };
+        })
+      );
     } else {
       setSelectionOptions(
-        selectionOptions.filter((item) =>
+        Options.filter((item) =>
           item.label.toLowerCase().includes(value.toLowerCase())
         )
       );
@@ -71,9 +92,18 @@ const Select = ({
 
   const handleClearSearch = () => {
     setCurrentViewingLabel("");
-    setCurrentItem({});
+    setCurrentItem(isMulti ? [] : {});
     setSelectionOptions(Options);
   };
+
+  const handleRemoveMultiSelectedItem = (item) => {
+    setCurrentItem(currentItem.filter((elm) => elm.value !== item.value));
+  };
+
+  console.log(
+    selectionOptions.reduce((count, obj) => count + obj.options?.length, 0),
+    selectionOptions
+  );
 
   return (
     <div className="kzui-select">
@@ -107,21 +137,23 @@ const Select = ({
               value={currentViewingLabel}
               onChange={(e) => handleSearch(e.target.value)}
             />
-            {isClearable && currentViewingLabel !== "" && (
-              <div
-                className="kzui-select__clear-icon-wrapper"
-                onClick={handleClearSearch}
-              >
-                <svg
-                  viewBox="0 0 20 20"
-                  aria-hidden="true"
-                  focusable="false"
-                  className="kzui-select__clear-icon"
+            {isClearable &&
+              (currentViewingLabel !== "" ||
+                (isMulti && currentItem.length > 0)) && (
+                <div
+                  className="kzui-select__clear-icon-wrapper"
+                  onClick={handleClearSearch}
                 >
-                  <path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path>
-                </svg>
-              </div>
-            )}
+                  <svg
+                    viewBox="0 0 20 20"
+                    aria-hidden="true"
+                    focusable="false"
+                    className="kzui-select__clear-icon"
+                  >
+                    <path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path>
+                  </svg>
+                </div>
+              )}
             <div className="kzui-select__dropdown-icon-wrapper">
               <svg
                 viewBox="0 0 20 20"
@@ -148,7 +180,11 @@ const Select = ({
               <p
                 key={idx}
                 className={`kzui-select__menu-item${
-                  currentItem.value === item.value
+                  isMulti
+                    ? currentItem.some((elm) => elm.value === item.value)
+                      ? " kzui-select__menu-item--multi-selected"
+                      : ""
+                    : currentItem.value === item.value
                     ? " kzui-select__menu-item--selected"
                     : ""
                 }`}
@@ -160,6 +196,10 @@ const Select = ({
               </p>
             ))}
           {optionsIsGrouped &&
+            selectionOptions.reduce(
+              (count, obj) => count + obj.options.length,
+              0
+            ) > 0 &&
             selectionOptions?.map((group, idx) => (
               <React.Fragment key={idx}>
                 <div className="kzui-select__menu-group-label">
@@ -171,7 +211,11 @@ const Select = ({
                     <p
                       key={idx}
                       className={`kzui-select__menu-item${
-                        currentItem.value === item.value
+                        isMulti
+                          ? currentItem.some((elm) => elm.value === item.value)
+                            ? " kzui-select__menu-item--multi-selected"
+                            : ""
+                          : currentItem.value === item.value
                           ? " kzui-select__menu-item--selected"
                           : ""
                       }`}
@@ -185,8 +229,32 @@ const Select = ({
                 }
               </React.Fragment>
             ))}
+
+          {selectionOptions.length === 0 ||
+            (selectionOptions.reduce(
+              (count, obj) => count + obj.options?.length,
+              0
+            ) === 0 && (
+              <div className="kzui-select__no-item">No options to Select</div>
+            ))}
         </div>
       </div>
+
+      {isMulti && (
+        <div className="kzui-select__multi-selected-item-wrapper">
+          {currentItem.map((item, idx) => (
+            <span key={idx} className="kzui-select__multi-selected-item">
+              {item.label}
+              <button
+                className="kzui-select__multi-selected-item-remove"
+                onClick={() => handleRemoveMultiSelectedItem(item)}
+              >
+                X
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -28,9 +28,47 @@ function App() {
     },
   ];
 
+  const groupedOptions = [
+    {
+      label: "Color",
+      options: [
+        {
+          label: "Red",
+          value: "red",
+        },
+        {
+          label: "Orange",
+          value: "orange",
+        },
+        {
+          label: "Green",
+          value: "green",
+        },
+      ],
+    },
+    {
+      label: "Fruit",
+      options: [
+        {
+          label: "Mango",
+          value: "mango",
+        },
+        {
+          label: "Orange",
+          value: "orange",
+        },
+        {
+          label: "Watermelon",
+          value: "watermelon",
+        },
+      ],
+    },
+  ];
+
   const [isClearable, setIsClearable] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [isGrouped, setIsGrouped] = useState(false);
 
   const Checkbox = ({ children, ...props }) => (
     <label style={{ marginRight: "1em" }}>
@@ -43,13 +81,14 @@ function App() {
     <main className="main">
       <div className="wrapper">
         <Select
-          onChange={consoleElement}
-          Options={simpleOptions}
+          Options={groupedOptions}
           isClearable={isClearable}
           isSearchable={isSearchable}
           isDisabled={isDisabled}
+          isGrouped={isGrouped}
           onSearch={consoleElementSearch}
           onMenuOpen={consoleMenuOpen}
+          onChange={consoleElement}
         />
       </div>
 
@@ -79,6 +118,12 @@ function App() {
           onChange={() => setIsDisabled((state) => !state)}
         >
           Disabled
+        </Checkbox>
+        <Checkbox
+          checked={isGrouped}
+          onChange={() => setIsGrouped((state) => !state)}
+        >
+          Grouped
         </Checkbox>
       </div>
     </main>

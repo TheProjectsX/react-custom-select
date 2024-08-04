@@ -15,32 +15,63 @@ const Select = ({
   onSearch = (value) => {},
 }) => {
   const [menuOpened, setMenuOpened] = useState(false);
-  const [currentValue, setCurrentValue] = useState(Value.label ?? "");
-  const [selectionOptions, setSelectionOptions] = useState(Options);
+  const [currentItem, setCurrentItem] = useState(Value);
+  const [currentViewingLabel, setCurrentViewingLabel] = useState(
+    Value.label ?? ""
+  );
+  const [selectionOptions, setSelectionOptions] = useState([]);
+  const [optionsIsGrouped, setOptionsIsGrouped] = useState(isGrouped);
 
+  useEffect(() => {
+    if (optionsIsGrouped) {
+      if (Options.every((item) => !item.hasOwnProperty("options"))) {
+        setSelectionOptions([
+          {
+            label: "Grouped Items",
+            options: Options,
+          },
+        ]);
+      } else if (Options.every((item) => item.hasOwnProperty("options"))) {
+        setSelectionOptions(Options);
+      } else {
+        setSelectionOptions({});
+      }
+    } else {
+      if (Options.every((item) => item.hasOwnProperty("options"))) {
+        setOptionsIsGrouped(true);
+      } else {
+        setSelectionOptions(Options);
+      }
+    }
+  }, [optionsIsGrouped]);
   //   Handler Function
   const handleElementChanged = (item) => {
-    setCurrentValue(item.label);
+    setCurrentItem(item);
+    setCurrentViewingLabel(item.label);
     onChange(item);
   };
 
   const handleSearch = (value) => {
-    setCurrentValue(value);
+    setCurrentViewingLabel(value);
     onSearch(value);
     if (value === "") {
       setSelectionOptions(Options);
       return;
     }
 
-    setSelectionOptions(
-      selectionOptions.filter((item) =>
-        item.label.toLowerCase().includes(value.toLowerCase())
-      )
-    );
+    if (optionsIsGrouped) {
+    } else {
+      setSelectionOptions(
+        selectionOptions.filter((item) =>
+          item.label.toLowerCase().includes(value.toLowerCase())
+        )
+      );
+    }
   };
 
   const handleClearSearch = () => {
-    setCurrentValue("");
+    setCurrentViewingLabel("");
+    setCurrentItem({});
     setSelectionOptions(Options);
   };
 
@@ -73,10 +104,10 @@ const Select = ({
               className={`kzui-select__control-input${
                 !isSearchable ? " kzui-select__control-input--disabled" : ""
               }`}
-              value={currentValue}
+              value={currentViewingLabel}
               onChange={(e) => handleSearch(e.target.value)}
             />
-            {isClearable && currentValue !== "" && (
+            {isClearable && currentViewingLabel !== "" && (
               <div
                 className="kzui-select__clear-icon-wrapper"
                 onClick={handleClearSearch}
@@ -112,17 +143,48 @@ const Select = ({
               : " kzui-select__menu--hidden"
           }`}
         >
-          {selectionOptions.map((item, idx) => (
-            <p
-              key={idx}
-              className="kzui-select__menu-item"
-              onMouseDown={(e) => {
-                handleElementChanged(item);
-              }}
-            >
-              {item.label}
-            </p>
-          ))}
+          {!optionsIsGrouped &&
+            selectionOptions.map((item, idx) => (
+              <p
+                key={idx}
+                className={`kzui-select__menu-item${
+                  currentItem.value === item.value
+                    ? " kzui-select__menu-item--selected"
+                    : ""
+                }`}
+                onMouseDown={(e) => {
+                  handleElementChanged(item);
+                }}
+              >
+                {item.label}
+              </p>
+            ))}
+          {optionsIsGrouped &&
+            selectionOptions?.map((group, idx) => (
+              <React.Fragment key={idx}>
+                <div className="kzui-select__menu-group-label">
+                  {group.label}
+                </div>
+                {
+                  //   console.log(group)
+                  group?.options?.map((item, idx) => (
+                    <p
+                      key={idx}
+                      className={`kzui-select__menu-item${
+                        currentItem.value === item.value
+                          ? " kzui-select__menu-item--selected"
+                          : ""
+                      }`}
+                      onMouseDown={(e) => {
+                        handleElementChanged(item);
+                      }}
+                    >
+                      {item.label}
+                    </p>
+                  ))
+                }
+              </React.Fragment>
+            ))}
         </div>
       </div>
     </div>

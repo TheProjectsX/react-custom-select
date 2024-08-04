@@ -102,3 +102,20 @@
 .kzui-select__menu-item:hover {
   background-color: rgb(195, 225, 255);
 }
+
+.kzui-select__menu-item--selected {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.kzui-select__menu-item--selected:hover {
+  background-color: dodgerblue;
+}
+
+.kzui-select__menu-group-label {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  padding: 10px 15px;
+  font-weight: bolder;
+  color: gray;
+}

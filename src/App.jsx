@@ -99,6 +99,7 @@ function App() {
 
   return (
     <main className="main">
+      <h1 style={{ marginBottom: "40px" }}>React Custom Select Component</h1>
       <div className="wrapper">
         <div className="custom-select">
           <h3 className="custom-select-title">Single Select</h3>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./styles.css";
 
 const Select = ({
-  Options,
+  Options = [],
   Value = {},
   Placeholder = "Select...",
   isClearable = true,

@@ -54,24 +54,28 @@ function App() {
     },
   ];
 
+  // Single Select
   const [isClearable_01, setIsClearable_01] = useState(true);
   const [isSearchable_01, setIsSearchable_01] = useState(true);
   const [isDisabled_01, setIsDisabled_01] = useState(false);
   const [isGrouped_01, setIsGrouped_01] = useState(false);
   const [isMulti_01, setIsMulti_01] = useState(false);
 
+  // Multi Select
   const [isClearable_02, setIsClearable_02] = useState(true);
   const [isSearchable_02, setIsSearchable_02] = useState(true);
   const [isDisabled_02, setIsDisabled_02] = useState(false);
   const [isGrouped_02, setIsGrouped_02] = useState(false);
   const [isMulti_02, setIsMulti_02] = useState(true);
 
+  // Grouped Items
   const [isClearable_03, setIsClearable_03] = useState(true);
   const [isSearchable_03, setIsSearchable_03] = useState(true);
   const [isDisabled_03, setIsDisabled_03] = useState(false);
   const [isGrouped_03, setIsGrouped_03] = useState(false);
   const [isMulti_03, setIsMulti_03] = useState(false);
-  4;
+
+  // Grouped Items Multi Select
   const [isClearable_04, setIsClearable_04] = useState(true);
   const [isSearchable_04, setIsSearchable_04] = useState(true);
   const [isDisabled_04, setIsDisabled_04] = useState(false);

@@ -1,3 +1,4 @@
+/* General Container Styles */
 .kzui-select {
   width: 100%;
   position: relative;
@@ -19,7 +20,7 @@
   user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
 }
 
-/* Control Element design */
+/* Control Element Styles */
 .kzui-select__control-label {
   display: flex;
   padding: 6px 10px;
@@ -30,37 +31,6 @@
 
 .kzui-select__control-label--opened {
   border: 2px solid dodgerblue;
-}
-
-.kzui-select__multi-selected-item-wrapper {
-  padding: 5px;
-  padding-top: 10px;
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-}
-
-.kzui-select__multi-selected-item {
-  font-size: 0.8rem;
-  padding-left: 8px;
-  background-color: rgb(230, 224, 224);
-  display: inline-block;
-  /* color: white; */
-}
-
-.kzui-select__multi-selected-item-remove {
-  background-color: transparent;
-  outline: none;
-  border: none;
-  padding: 8px;
-  margin-left: 4px;
-  font-size: 0.7rem;
-  color: red;
-  cursor: pointer;
-}
-
-.kzui-select__multi-selected-item-remove:hover {
-  background-color: rgb(255, 167, 167);
 }
 
 .kzui-select__control-input {
@@ -79,7 +49,7 @@
   user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera, and Edge */
 }
 
-/* Control Icons */
+/* Icon Styles */
 .kzui-select__clear-icon-wrapper,
 .kzui-select__dropdown-icon-wrapper {
   padding: 5px 10px;
@@ -88,24 +58,19 @@
   align-items: center;
 }
 
-.kzui-select__clear-icon-wrapper:hover .kzui-select__clear-icon,
-.kzui-select__dropdown-icon-wrapper:hover .kzui-select__dropdown-icon {
-  fill: black;
-}
-
-.kzui-select__dropdown-icon-wrapper {
-  border-left: 1px solid black;
-}
-
 .kzui-select__clear-icon,
 .kzui-select__dropdown-icon {
   width: 20px;
   fill: gray;
 }
 
-/* Selection Items */
+.kzui-select__dropdown-icon-wrapper {
+  border-left: 1px solid black;
+}
+
+/* Menu Styles */
 .kzui-select__menu {
-  max-height: 500px;
+  max-height: 300px;
   overflow-y: auto;
   padding-block: 5px;
   border-radius: 10px;
@@ -114,6 +79,7 @@
   width: 100%;
   background-color: white;
   margin-top: 5px;
+  z-index: 10;
 }
 
 .kzui-select__menu--hidden {
@@ -130,26 +96,10 @@
   width: 100%;
 }
 
-.kzui-select__menu-item:hover {
-  background-color: rgb(195, 225, 255);
-}
-
-.kzui-select__menu-item--selected {
-  background-color: dodgerblue;
-  color: white;
-}
-
-.kzui-select__menu-item--selected:hover {
-  background-color: dodgerblue;
-}
-
-.kzui-select__menu-item--multi-selected {
-  display: none;
-}
-
 .kzui-select__menu-group-label {
   text-transform: uppercase;
   font-size: 0.8rem;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   padding: 10px 15px;
   font-weight: bolder;
   color: gray;
@@ -162,4 +112,58 @@
   text-align: center;
   font-weight: bold;
   color: gray;
+}
+
+/* State Modifiers */
+.kzui-select__menu-item:hover {
+  background-color: rgb(195, 225, 255);
+}
+
+.kzui-select__clear-icon-wrapper:hover .kzui-select__clear-icon,
+.kzui-select__dropdown-icon-wrapper:hover .kzui-select__dropdown-icon {
+  fill: black;
+}
+
+.kzui-select__menu-item--selected {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.kzui-select__menu-item--selected:hover {
+  background-color: dodgerblue;
+}
+
+.kzui-select__multi-selected-item-remove:hover {
+  background-color: rgb(255, 167, 167);
+}
+
+/* Additional Features */
+.kzui-select__multi-selected-item-wrapper {
+  padding: 5px;
+  padding-top: 10px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.kzui-select__multi-selected-item {
+  font-size: 0.8rem;
+  padding-left: 8px;
+  background-color: rgb(230, 224, 224);
+  display: inline-block;
+}
+
+.kzui-select__multi-selected-item-remove {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  padding: 8px;
+  margin-left: 4px;
+  font-size: 0.7rem;
+  color: red;
+  cursor: pointer;
+}
+
+.kzui-select__menu-item--multi-selected {
+  display: none;
 }

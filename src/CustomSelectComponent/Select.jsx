@@ -19,7 +19,7 @@ const Select = ({
     isMulti ? (Array.isArray(Value) ? Value : []) : Object(Value)
   );
   const [currentViewingLabel, setCurrentViewingLabel] = useState(
-    Value.label ?? ""
+    isMulti ? "" : Value.label ?? ""
   );
   const [selectionOptions, setSelectionOptions] = useState([]);
   const [optionsIsGrouped, setOptionsIsGrouped] = useState(isGrouped);
@@ -48,12 +48,13 @@ const Select = ({
         setSelectionOptions(Options);
       }
     }
-    console.log(optionsIsGrouped);
   }, [isGrouped]);
+
   //   Handler Function
   const handleElementChanged = (item) => {
     if (isMulti) {
       setCurrentItem([...currentItem, item]);
+      onChange([...currentItem, item]);
     } else {
       setCurrentItem(item);
       setCurrentViewingLabel(item.label);
@@ -99,11 +100,6 @@ const Select = ({
   const handleRemoveMultiSelectedItem = (item) => {
     setCurrentItem(currentItem.filter((elm) => elm.value !== item.value));
   };
-
-  console.log(
-    selectionOptions.reduce((count, obj) => count + obj.options?.length, 0),
-    selectionOptions
-  );
 
   return (
     <div className="kzui-select">
@@ -205,28 +201,25 @@ const Select = ({
                 <div className="kzui-select__menu-group-label">
                   {group.label}
                 </div>
-                {
-                  //   console.log(group)
-                  group?.options?.map((item, idx) => (
-                    <p
-                      key={idx}
-                      className={`kzui-select__menu-item${
-                        isMulti
-                          ? currentItem.some((elm) => elm.value === item.value)
-                            ? " kzui-select__menu-item--multi-selected"
-                            : ""
-                          : currentItem.value === item.value
-                          ? " kzui-select__menu-item--selected"
+                {group?.options?.map((item, idx) => (
+                  <p
+                    key={idx}
+                    className={`kzui-select__menu-item${
+                      isMulti
+                        ? currentItem.some((elm) => elm.value === item.value)
+                          ? " kzui-select__menu-item--multi-selected"
                           : ""
-                      }`}
-                      onMouseDown={(e) => {
-                        handleElementChanged(item);
-                      }}
-                    >
-                      {item.label}
-                    </p>
-                  ))
-                }
+                        : currentItem.value === item.value
+                        ? " kzui-select__menu-item--selected"
+                        : ""
+                    }`}
+                    onMouseDown={(e) => {
+                      handleElementChanged(item);
+                    }}
+                  >
+                    {item.label}
+                  </p>
+                ))}
               </React.Fragment>
             ))}
 

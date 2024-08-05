@@ -50,7 +50,8 @@ const Select = ({
     }
   }, [isGrouped]);
 
-  //   Handler Function
+  // Handler Functions
+  // Element Selected / Changed Handler
   const handleElementChanged = (item) => {
     if (isMulti) {
       setCurrentItem([...currentItem, item]);
@@ -62,6 +63,7 @@ const Select = ({
     }
   };
 
+  // Element Search Handler
   const handleSearch = (value) => {
     setCurrentViewingLabel(value);
     onSearch(value);
@@ -91,12 +93,14 @@ const Select = ({
     }
   };
 
-  const handleClearSearch = () => {
+  // Clear Selected Elements Handler
+  const handleClearSelection = () => {
     setCurrentViewingLabel("");
     setCurrentItem(isMulti ? [] : {});
     setSelectionOptions(Options);
   };
 
+  // Clear Multi Selected Elements Handler
   const handleRemoveMultiSelectedItem = (item) => {
     setCurrentItem(currentItem.filter((elm) => elm.value !== item.value));
   };
@@ -138,7 +142,7 @@ const Select = ({
                 (isMulti && currentItem.length > 0)) && (
                 <div
                   className="kzui-select__clear-icon-wrapper"
-                  onClick={handleClearSearch}
+                  onClick={handleClearSelection}
                 >
                   <svg
                     viewBox="0 0 20 20"

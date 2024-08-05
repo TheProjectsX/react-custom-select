@@ -15,5 +15,17 @@
 }
 
 .wrapper {
+  max-width: 1200px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 40px;
+}
+
+.custom-select {
   width: 500px;
+}
+
+.custom-select-title {
+  margin-bottom: 10px;
 }

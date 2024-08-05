@@ -40,3 +40,12 @@ const consoleMenuOpen = () => {
   onChange={consoleElementSelected}
 />;
 ```
+
+## Key Features:
+
+- **Single and Multiple Selection:** The component supports both single and multiple value selection.
+- **Searchable Options:** Users can search for specific options within the dropdown.
+- **Clearable Options:** Selected options can be easily cleared.
+- **Grouped Items:** Options are displayed in organized groups.
+- **Accessibility:** The component is designed to be accessible for all users.
+- **Responsive Design:** The component is fully responsive, ensuring optimal usability across various devices.

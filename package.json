@@ -1,5 +1,6 @@
 {
   "name": "custom-select-component",
+  "homepage": "https://theprojectsx.github.io/react-custom-select",
   "private": true,
   "version": "0.0.0",
   "type": "module",
